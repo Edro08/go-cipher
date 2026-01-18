@@ -1,0 +1,101 @@
+definitions:
+  GoCipher_internal_cipher.ErrResponse:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: Bad Request
+        type: string
+      processID:
+        example: "123456789"
+        type: string
+    type: object
+  GoCipher_internal_cipher.Request:
+    properties:
+      profile:
+        example: default
+        type: string
+      value:
+        example: hello world
+        type: string
+    type: object
+  GoCipher_internal_cipher.Response:
+    properties:
+      processID:
+        example: "123456789"
+        type: string
+      profile:
+        example: default
+        type: string
+      value:
+        example: hello world
+        type: string
+    type: object
+info:
+  contact: {}
+  description: API service that provides endpoints to encrypt and decrypt text.
+  title: GoCipher
+  version: "1.0"
+paths:
+  /api/cipher/decrypt:
+    post:
+      consumes:
+      - application/json
+      description: Decrypts the provided ciphertext and returns the original plaintext.
+      parameters:
+      - description: Ciphertext to decrypt
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/GoCipher_internal_cipher.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Decrypted text response
+          schema:
+            $ref: '#/definitions/GoCipher_internal_cipher.Response'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/GoCipher_internal_cipher.ErrResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/GoCipher_internal_cipher.ErrResponse'
+      summary: Decrypt
+      tags:
+      - Cipher
+  /api/cipher/encrypt:
+    post:
+      consumes:
+      - application/json
+      description: Encrypts the provided plaintext and returns the ciphertext.
+      parameters:
+      - description: Plaintext to encrypt
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/GoCipher_internal_cipher.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Encrypted text response
+          schema:
+            $ref: '#/definitions/GoCipher_internal_cipher.Response'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/GoCipher_internal_cipher.ErrResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/GoCipher_internal_cipher.ErrResponse'
+      summary: Encrypt
+      tags:
+      - Cipher
+swagger: "2.0"

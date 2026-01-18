@@ -1,0 +1,108 @@
+# Configuraciones del servidor
+server:
+  port: 80
+  name: "GoCipher"
+  swagger:
+    enable: true
+    port: 80
+    openBrowser: # configuraciones para inicio de navegador cuando se levante el servidor
+      enable: true
+      timeSleep: 2 #Seconds
+      url: "http://localhost:<port>/swagger/index.html"
+
+# Configuraciones de endpoints
+endpoints:
+  paths:
+    cipher:
+      decrypt: /api/cipher/decrypt
+      encrypt: /api/cipher/encrypt
+
+# Configuraciones de profiles
+profiles:
+  default:
+    type: RSA
+    keys:
+      # secrets to testing
+      public: ""
+      private: ""
+  defaultV2:
+    type: AES256-GCM
+    keys:
+      # secrets to testing
+      secret: "my-very-strong-plaintext-secret1"
+  defaultV3:
+    type: AES256-CBC
+    keys:
+      # secrets to testing
+      secret: "my-very-strong-plaintext-secret1"
+      iv: "my-iv-1234567890"
+response:
+  success:
+    statusCode: 200
+    code: 200
+    message: "Operation completed successfully"
+  errors:
+    default:
+      statusCode: 500
+      code: 500
+      message: "An unexpected error occurred on the server"
+    notImplemented:
+      statusCode: 501
+      code: 501
+      message: "The requested functionality is not yet implemented"
+
+    # Decryption/Encryption Errors
+    decryptFailed:
+      statusCode: 400
+      code: 4001
+      message: "Failed to decrypt the provided data. Please check the ciphertext and keys"
+    encryptFailed:
+      statusCode: 400
+      code: 4002
+      message: "Failed to encrypt the provided data"
+    decodeBase64:
+      statusCode: 400
+      code: 4003
+      message: "Invalid Base64 encoding in the request"
+
+    # Key Management Errors
+    privateKeyNotFound:
+      statusCode: 404
+      code: 4041
+      message: "Required private key could not be found"
+    publicKeyNotFound:
+      statusCode: 404
+      code: 4042
+      message: "Required public key could not be found"
+
+    # Key Format Errors (Más descriptivos, menos técnicos)
+    decodePEMBlockPrivate:
+      statusCode: 400
+      code: 4004
+      message: "The private key format is invalid or corrupted"
+    decodePEMBlockPublic:
+      statusCode: 400
+      code: 4005
+      message: "The public key format is invalid or corrupted"
+    parsePrivateKey:
+      statusCode: 400
+      code: 4006
+      message: "Could not parse the private key. Please ensure it is a valid RSA/ECC key"
+    parsePublicKey:
+      statusCode: 400
+      code: 4007
+      message: "Could not parse the public key. Please ensure it is a valid RSA/ECC key"
+
+    # Infrastructure/Internal Errors
+    createCipherBlock:
+      statusCode: 500
+      code: 5001
+      message: "Internal error: Failed to initialize the cryptographic cipher"
+    createGCM:
+      statusCode: 500
+      code: 5002
+      message: "Internal error: Failed to initialize GCM mode"
+    generateNonce:
+      statusCode: 500
+      code: 5003
+      message: "Internal error: Could not generate a secure random nonce"

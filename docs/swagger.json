@@ -1,0 +1,152 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API service that provides endpoints to encrypt and decrypt text.",
+        "title": "GoCipher",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/cipher/decrypt": {
+            "post": {
+                "description": "Decrypts the provided ciphertext and returns the original plaintext.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cipher"
+                ],
+                "summary": "Decrypt",
+                "parameters": [
+                    {
+                        "description": "Ciphertext to decrypt",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GoCipher_internal_cipher.Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Decrypted text response",
+                        "schema": {
+                            "$ref": "#/definitions/GoCipher_internal_cipher.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/GoCipher_internal_cipher.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/GoCipher_internal_cipher.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cipher/encrypt": {
+            "post": {
+                "description": "Encrypts the provided plaintext and returns the ciphertext.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cipher"
+                ],
+                "summary": "Encrypt",
+                "parameters": [
+                    {
+                        "description": "Plaintext to encrypt",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GoCipher_internal_cipher.Request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Encrypted text response",
+                        "schema": {
+                            "$ref": "#/definitions/GoCipher_internal_cipher.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/GoCipher_internal_cipher.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/GoCipher_internal_cipher.ErrResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "GoCipher_internal_cipher.ErrResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Bad Request"
+                },
+                "processID": {
+                    "type": "string",
+                    "example": "123456789"
+                }
+            }
+        },
+        "GoCipher_internal_cipher.Request": {
+            "type": "object",
+            "properties": {
+                "profile": {
+                    "type": "string",
+                    "example": "default"
+                },
+                "value": {
+                    "type": "string",
+                    "example": "hello world"
+                }
+            }
+        },
+        "GoCipher_internal_cipher.Response": {
+            "type": "object",
+            "properties": {
+                "processID": {
+                    "type": "string",
+                    "example": "123456789"
+                },
+                "profile": {
+                    "type": "string",
+                    "example": "default"
+                },
+                "value": {
+                    "type": "string",
+                    "example": "hello world"
+                }
+            }
+        }
+    }
+}
